@@ -5,8 +5,9 @@ export interface TypedRequestBody<T> extends Request {
   body: T
 }
 
-export const createCollection = async (req: TypedRequestBody<{ collectionName: string, colorCoding: string }>, res: Response) => {
+export const createCollection = async (req: TypedRequestBody<{ collectionName: string, colorCoding: string }>, res: Response<any, { userId: string }>) => {
   const { collectionName, colorCoding } = req.body;
+  const { userId } = res.locals;
 
   try {
     // Check if a collection with that name already exists
@@ -15,7 +16,7 @@ export const createCollection = async (req: TypedRequestBody<{ collectionName: s
       return res.status(400).json({ message: 'A collection with that name is already existing! '});
     }
 
-    const newCollection = await new Collection({ collectionName, colorCoding });
+    const newCollection = await new Collection({ collectionName, colorCoding, createdBy: userId });
     const newCollectionDoc = await newCollection.save();
 
     res.status(201).json({ collection: newCollectionDoc })

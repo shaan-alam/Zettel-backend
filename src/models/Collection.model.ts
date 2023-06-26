@@ -6,6 +6,7 @@ export interface CollectionDocument extends mongoose.Document {
   colorCoding: string;
   createdAt: string;
   notes: NoteDocument[]
+  createdBy: string
 }
 
 const CollectionSchema = new mongoose.Schema({
@@ -18,8 +19,11 @@ const CollectionSchema = new mongoose.Schema({
     required: true
   },
   notes: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'note' }
-  ]
+    { type: mongoose.Schema.Types.ObjectId, ref: 'notes' }
+  ],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'users' 
+  }
 }, { timestamps: true })
 
 export default mongoose.model<CollectionDocument>('Collection', CollectionSchema);

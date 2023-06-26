@@ -5,6 +5,7 @@ export interface NoteDocument extends mongoose.Document {
   linkedNotes: NoteDocument[];
   body: string
   createdBy: string;
+  fromCollection: string 
 }
 
 const NoteSchema = new mongoose.Schema({
@@ -13,15 +14,19 @@ const NoteSchema = new mongoose.Schema({
     required: true
   },
   linkedNotes: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'note' }
+    { type: mongoose.Schema.Types.ObjectId, ref: 'notes' }
   ],
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+  fromCollection: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'collections',
   },
   body: {
     type: String,
     required: true
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
   }
 }, { timestamps: true })
 
