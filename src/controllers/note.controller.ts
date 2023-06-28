@@ -65,7 +65,7 @@ export const getAllNotesOfACollection = async (req: Request<{ collectionId: stri
     const { collectionId } = req.params
     const { userId } = res.locals;
 
-    const result = await Collection.aggregate([
+    const results = await Collection.aggregate([
       { $match: { "_id": new ObjectId(collectionId), createdBy: new ObjectId(userId) }},
       {
         $lookup: {
@@ -82,8 +82,8 @@ export const getAllNotesOfACollection = async (req: Request<{ collectionId: stri
       }
     ]);
 
-    res.json(result)
+    return res.json({ result: results[0] })
   } catch (err) {
-    
+    res.status(400).json({ message: (err as any).message })
   }
 }
