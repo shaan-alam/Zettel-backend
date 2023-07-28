@@ -9,5 +9,8 @@ const router = express.Router();
 
 router.post('/signup', validateRequest(authSignUpSchema), getUser, signUp)
 router.post('/signIn', validateRequest(authSignInSchema), getUser, signIn)
+router.post('/test', (req: express.Request, res: express.Response) => {
+  res.send({ test: 'message received'})
+})
 
 export default router;
