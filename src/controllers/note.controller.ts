@@ -16,6 +16,8 @@ export const createNote = async (req: TypedRequestBody<NoteType>, res: Response<
   try {
     const { title, body, collection } = req.body
 
+    console.log('creaeting a new note', collection)
+
     const newNote = await new Note({ title, body, createdBy: res.locals.userId, fromCollection: collection });
     const newNoteDoc = await newNote.save();
 
@@ -83,6 +85,36 @@ export const getAllNotesOfACollection = async (req: Request<{ collectionId: stri
     ]);
 
     return res.json({ result: results[0] })
+  } catch (err) {
+    res.status(400).json({ message: (err as any).message })
+  }
+}
+
+export const saveNote = async (req: TypedRequestBody<{ _id: string, body: string, title?: string }>, res: Response) => {
+  const { _id, body, title } = req.body;
+  let newObj: Record<string, string> = {
+    body
+  }
+
+  if (title) {
+    newObj.title = title
+  }
+  console.log(newObj)
+
+  try {
+    const newDoc = await Note.updateOne({ _id }, { ...newObj }, { new: true })
+    res.json({ newDoc })
+  } catch (err) {
+    res.status(400).json({ message: (err as any).message })
+  }
+}
+
+export const getNote = async (req: Request<{ noteId: string }>, res: Response<any, { userId: string }>) => {
+  const { noteId } = req.params;
+  const { userId } = res.locals;
+  try {
+    const note = await Note.findOne({ createdBy: userId, _id: noteId });
+    return res.json({ note });
   } catch (err) {
     res.status(400).json({ message: (err as any).message })
   }

@@ -42,6 +42,7 @@ interface LoginInterface extends Request {
 }
 
 export const signIn = async (req: LoginInterface, res: Response & { locals: { user: UserDocument }}) => {
+  console.log('signing in')
   if (!res.locals.user) {
     return res.status(404).json({ message: "No user with that email exists!" });
   }   
