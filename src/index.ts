@@ -10,7 +10,7 @@ colors.enable();
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'https://zettel-eight.vercel.app' }));
 app.use(express.json())
 app.use(express.urlencoded({ limit: '25mb' }));
 
