@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import Collection from '../models/Collection.model'
+import { TypedRequestBody } from '../@types';
 
-export interface TypedRequestBody<T> extends Request {
-  body: T
-}
 
 export const createCollection = async (req: TypedRequestBody<{ collectionName: string, colorCoding: string }>, res: Response<any, { userId: string }>) => {
   const { collectionName, colorCoding } = req.body;

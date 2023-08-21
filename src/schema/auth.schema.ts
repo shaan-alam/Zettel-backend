@@ -11,3 +11,9 @@ export const authSignInSchema = yup.object({
   email: yup.string().email("Please provide a valid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 })
+
+export const oAuthSchema = yup.object({
+  email: yup.string().email("Please provide a valid email").required("Email is required"),
+  fullName: yup.string().required("Full Name is required"),
+  avatar: yup.string().required()
+})
