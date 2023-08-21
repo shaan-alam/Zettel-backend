@@ -82,6 +82,7 @@ export const oAuthLogin = async (
 ) => {
   const { user } = res.locals;
   const { email, fullName, avatar } = req.body;
+  
   try {
     if (!user) {
       const newUser = await new User({ email, fullName, avatar });
@@ -91,6 +92,11 @@ export const oAuthLogin = async (
       return res
         .status(201)
         .json({ user: omit(newUserDoc.toJSON(), "password"), token });
+    } else {
+      const token = await signToken({ _id: user._id });
+      return res
+        .status(201)
+        .json({ user: omit(user.toJSON(), "password"), token });
     }
   } catch (err) {
     res.status(400).json({ message: (err as any).message });
